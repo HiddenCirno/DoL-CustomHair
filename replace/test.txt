@@ -1,0 +1,1 @@
+<span class="gold">£<<print ($grace * 400)>></span>

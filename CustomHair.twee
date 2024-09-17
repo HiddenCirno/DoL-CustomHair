@@ -1,0 +1,242 @@
+:: CustomDyeHair
+理发师在两个单独的碗里混合染料，直到起泡。<<Hes>>留下了几碗看着黏糊糊的液体。
+		<br>
+		<<He>>用一排夹子将你的头发分成几部分。随后，从较浅的颜色开始，<<he>>在你的头发上涂抹粘液，每个部分都分别涂抹。
+		<br><br>
+		在等待染发剂凝固时，你们闲聊了会。没过多久，理发师拿来一面镜子，让你从各个角度看你新染的头发。
+		<br><br>
+		<<unset $dyeOption>>
+		<<unset $dyedHairPart>>
+	<<link [[继续|Hairdressers]]>><<endevent>><</link>>
+
+:: CustomHairPassage
+<div id="hairDresserDiv">
+<div id="mannequin" @class="'mannequin ' + _hiddenMannequin + ($sidebarRenderer is 'both' ? ' both-renderers' : '')" style="height:unset">
+<<custommannequinHairdresser>>
+</div>
+<div>
+输入十六进制字符以定制你的头发颜色
+<br>
+发型: 
+<label><<radiobutton "$twoToneStyle" "low-ombre" autocheck>>低渐变</label> |
+<label><<radiobutton "$twoToneStyle" "high-ombre" autocheck>>高渐变</label> |
+<label><<radiobutton "$twoToneStyle" "split" autocheck>>分色</label> |
+<label><<radiobutton "$twoToneStyle" "face-frame" autocheck>>面部高光</label> |
+<br>
+<<if $cachecolor1 is null or $cachecolor1 is undefined>><<set $cachecolor1 to "">><</if>>
+<<if $cachecolor2 is null or $cachecolor2 is undefined>><<set $cachecolor2 to "">><</if>>
+
+<<if $cachecolor1 is "">>
+<<if $customhaircolro1 isnot null and $customhaircolor1 isnot undefined>>
+<<set $cachecolor1 to $customhaircolor1>>
+<</if>>
+<</if>>
+<<if $cachecolor2 is "">>
+<<if $customhaircolro2 isnot null and $customhaircolor2 isnot undefined>>
+<<set $cachecolor2 to $customhaircolor2>>
+<</if>>
+<</if>>
+<<CustomHairColor1>>
+<<CustomHairColor2>>
+<br>
+<<link [[查看效果|$passage]]>><</link>>
+<br>
+<<if $money lt 25000>>
+			你没有足够的钱付给理发师。
+			<<else>>
+<<link [["付钱 (0:30 £250)"|CustomDyeHair]]>>
+<<set $money -= 25000>>
+<<set _gradient to {
+			style: $twoToneStyle,
+			colours: ["customcolor1", "customcolor2"]
+		}>>
+		<<if $dyedHairPart is "sides" or $dyedHairPart is "hair">>
+			<<set $hairColourStyle to "gradient">>
+			<<set $haircolour to clone("customcolor1")>> /* This is set as a 'fallback' color for combat renderer */
+			<<set $hairColourGradient to clone(_gradient)>>
+		<</if>>
+		<<if $dyedHairPart is "fringe" or $dyedHairPart is "hair">>
+			<<set $hairFringeColourStyle to "gradient">>
+			<<set $hairfringecolour to clone("customcolor2")>> /* This is set as a 'fallback' color for combat renderer */
+			<<set $hairFringeColourGradient to clone(_gradient)>>
+		<</if>>
+		<<pass 30>>
+		<</link>>
+<</if>>
+<br>
+<<link [[离开|Hairdressers]]>><<endevent>>
+<<if $cachecolor1 isnot "">>
+<<set $customhaircolor1 to $cachecolor1>>
+<<set $cachecolor1 to "">>
+<</if>>
+<<if $cachecolor2 isnot "">>
+<<set $customhaircolor2 to $cachecolor2>>
+<<set $cachecolor2 to "">>
+<</if>>
+<</link>>
+<<LoadCustomColor>>
+</div>
+
+
+
+
+
+
+
+
+
+
+:: CustomHairWidget [widget]
+<<widget "CustomHairColor1">>
+<br>
+<<if $customhaircolor1 is null or $customhaircolor1 is undefined>>
+<<set $customhaircolor1 to "#FFFFFF">>
+<</if>>
+<span class="gold"><<lanSwitch "CustomHair1" "颜色1" >></span>
+<br>
+当前颜色：$customhaircolor1
+<br>
+<<textbox "$customhaircolor1" "">><<link [[确认|$passage]]>><</link>>
+<br>
+<br>
+<</widget>>
+
+<<widget "CustomHairColor2">>
+<br>
+<<if $CustomHairColor2 is null or $customhaircolor2 is undefined>>
+<<set $customhaircolor2 to "#FFFFFF">>
+<</if>>
+<span class="gold"><<lanSwitch "CustomHair1" "颜色2" >></span>
+<br>
+当前颜色：$customhaircolor2
+<br>
+<<textbox "$customhaircolor2" "">><<link [[确认|$passage]]>><</link>>
+<br>
+<br>
+<</widget>>
+
+
+
+<<widget "LoadCustomColor">>
+<br>
+<<if $customhaircolor1 isnot null and $customhaircolor1 isnot undefined>>
+<<if $customhaircolor1 is "">>
+<<set $customhaircolor1 to $customhaircolor3>>
+<</if>>
+<<if setup.colours.hair[setup.colours.hair.length - 4].canvasfilter.blend isnot $customhaircolor1>>
+<<set setup.colours.hair[setup.colours.hair.length - 4].canvasfilter.blend to $customhaircolor1>>
+<<set setup.colours.hair_map.customcolor1.canvasfilter.blend to $customhaircolor1>>
+<</if>>
+<<if $customhaircolor3 isnot $customhaircolor1 and $customhaircolor1 isnot "" and $customhaircolor1.includes("#")>>
+<<set $customhaircolor3 to $customhaircolor1>>
+<</if>>
+<</if>>
+<<if $customhaircolor2 isnot null and $customhaircolor2 isnot undefined>>
+<<if $customhaircolor2 is "">>
+<<set $customhaircolor2 to $customhaircolor4>>
+<</if>>
+<<if setup.colours.hair[setup.colours.hair.length - 3].canvasfilter.blend isnot $customhaircolor2>>
+<<set setup.colours.hair[setup.colours.hair.length - 3].canvasfilter.blend to $customhaircolor2>>
+<<set setup.colours.hair_map.customcolor2.canvasfilter.blend to $customhaircolor2>>
+<</if>>
+<<if $customhaircolor4 isnot $customhaircolor2 and $customhaircolor2 isnot "" and $customhaircolor2.includes("#")>>
+<<set $customhaircolor4 to $customhaircolor2>>
+<</if>>
+<</if>>
+<</widget>>
+
+<<widget "custommannequinHairdresser">>
+    <!-- 检查是否应该显示图像且侧边栏渲染器不为图像 -->
+	<<if $options.images is 1 and $sidebarRenderer isnot "img">>
+		<div class="mannequin-inner">
+
+            <!-- 选择发型师模型，'main'为模型类型，'hairdresser'为具体模型 -->
+			<<selectmodel "main" "hairdresser">>
+				<!-- 设置模型选项，显示为真人大小，并隐藏脸部 -->
+				<<set _modeloptions.mannequin to true>>
+				<<set _modeloptions.show_face to false>>
+
+                <!-- 显示眉毛图层 -->
+				<<showlayer "brows">>
+
+                <!-- 显示腹股沟（可能与模型的显示风格有关） -->
+				<<set _modeloptions.crotch_visible to true>>
+
+                <!-- 设置眉毛的位置（顶部） -->
+				<<set _modeloptions.brows to "top">>
+
+                <!-- 设置眉毛颜色，若没有指定眉毛颜色则使用自然发色 -->
+				<<set _modeloptions.brows_colour to ($makeup.browscolour != 0 ? $makeup.browscolour : $naturalhaircolour)>>
+
+                <!-- 如果眉毛染色选项既不是“noChange”也不是“removeDye”，则设置眉毛颜色为染色选项 -->
+				<<if $browsDyeOption isnot "noChange" and $browsDyeOption isnot "removeDye">>
+					<<set _modeloptions.brows_colour to $browsDyeOption>>
+				<</if>>
+
+                <!-- 设置头发和刘海的颜色 -->
+				<<set _modeloptions.hair_colour = $haircolour>>
+				<<set _modeloptions.hair_fringe_colour = $hairfringecolour>>
+
+                <!-- 设置头发和刘海的颜色渐变 -->
+				<<set _modeloptions.hair_fringe_colour_gradient = $hairFringeColourGradient>>
+				<<set _modeloptions.hair_fringe_colour_style = $hairFringeColourStyle>>
+				<<set _modeloptions.hair_colour_gradient = $hairColourGradient>>
+				<<set _modeloptions.hair_colour_style = $hairColourStyle>>
+
+                <!-- 如果启用了双色染发 -->
+
+                    <!-- 如果头发颜色映射表中没有对应的双色染色选项，则使用默认头发和刘海颜色 -->
+
+                    <!-- 设置渐变效果的颜色与样式 -->
+					<<set _gradient1 = {
+						style: $twoToneStyle,
+						colours: ["customcolor1", "customcolor2"]
+					}>>
+					<<set _gradient2 = {
+						style: $twoToneStyle,
+						colours: ["customcolor3", "customcolor4"]
+					}>>
+
+                    <!-- 如果染发区域不是刘海，则应用第一种颜色和渐变 -->
+					<<if $dyedHairPart isnot "fringe">>
+						<<set _modeloptions.hair_colour = "customcolor1">>
+						<<set _modeloptions.hair_colour_gradient = clone(_gradient1)>>
+						<<set _modeloptions.hair_colour_style to "gradient">>
+					<</if>>
+
+                    <!-- 如果染发区域不是两侧头发，则应用第二种颜色和渐变到刘海 -->
+					<<if $dyedHairPart isnot "sides">>
+						<<set _modeloptions.hair_fringe_colour = "customcolor2">>
+						<<set _modeloptions.hair_fringe_colour_gradient = clone(_gradient1)>>
+						<<set _modeloptions.hair_fringe_colour_style to "gradient">>
+					<</if>>
+
+                <!-- 如果没有启用双色染发，处理单色染发 -->
+
+                <!-- 根据发型选项设置侧边头发长度 -->
+				<<set _modeloptions.hair_sides_length to $hairOption != $hairlength ? convertHairLengthToStage("sides", $hairOption) : $hairlengthstage>>
+
+                <!-- 根据刘海选项设置刘海长度 -->
+				<<set _modeloptions.hair_fringe_length to $fringeOption != $fringelength ? convertHairLengthToStage("fringe", $fringeOption) : $fringelengthstage>>
+
+                <!-- 设置刘海和侧边头发的类型 -->
+				<<set _modeloptions.hair_fringe_type to $fringetype>>
+				<<set _modeloptions.hair_sides_type to $hairtype>>
+
+			<!-- 渲染最终的发型师模型 -->
+			<<rendermodel "canvas-mannequin">>
+		</div>
+	<</if>>
+<</widget>>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,3 @@
+<<link [[定制你的发色|CustomHairPassage]]>><</link>>
+<br>
+<<link [[离开|Hairdressers]]>><<endevent>><</link>>

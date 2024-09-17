@@ -1,0 +1,1 @@
+<<set _dyeNames to setup.customhairs.dyeNames>><br><<set _dyeNamesOld to 

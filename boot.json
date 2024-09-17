@@ -1,0 +1,57 @@
+{
+  "name": "CustomHair",
+  "version": "1.0.0",
+  "scriptFileList_inject_early": [],
+  "scriptFileList_earlyload": [
+  ],
+  "scriptFileList_preload": [],
+  "styleFileList": [],
+  "scriptFileList": [
+    "main.js"
+  ],
+  "tweeFileList": [
+    "CustomHair.twee"
+  ],
+  "imgFileList": [],
+  "additionFile": [
+    "replace/customhair.txt"
+  ],
+  "addonPlugin": [
+    {
+      "modName": "TweeReplacer",
+      "addonName": "TweeReplacerAddon",
+      "modVersion": "1.0.0",
+      "params": [
+        {
+          "passage": "Hairdressers Widgets",
+          "findString": "<<link [[离开|Hairdressers]]>><<endevent>><</link>>",
+          "replaceFile": "replace/customhair.txt"
+        }
+      ]
+    },
+    {
+      "modName": "ModLoader DoL ImageLoaderHook",
+      "addonName": "ImageLoaderAddon",
+      "modVersion": "^2.3.0",
+      "params": []
+    }
+  ],
+  "dependenceInfo": [
+    {
+      "modName": "TweeReplacer",
+      "version": "^1.0.0"
+    },
+    {
+      "modName": "ReplacePatcher",
+      "version": "^1.0.0"
+    },
+    {
+      "modName": "Simple Frameworks",
+      "version": ">=1.0.0"
+    },
+    {
+      "modName": "ModLoader DoL ImageLoaderHook",
+      "version": "^2.3.0"
+    }
+  ]
+}

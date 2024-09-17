@@ -1,0 +1,1 @@
+<<set $hairdressersHairColour to setup.customhairs.hairColor>><br><<set $hairdressersHairColour to 
